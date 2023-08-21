@@ -1,40 +1,24 @@
 #!/usr/bin/python3
-"""Module test_city.py
-Tests for class City.
-"""
-
-
-from models.base_model import BaseModel
+""" """
+from tests.test_models.test_base_model import test_basemodel
 from models.city import City
-import unittest
 
 
-class TestCity(unittest.TestCase):
-    """Tests for class City."""
+class test_City(test_basemodel):
+    """ """
 
-    def setUp(self):
-        pass
+    def __init__(self, *args, **kwargs):
+        """ """
+        super().__init__(*args, **kwargs)
+        self.name = "City"
+        self.value = City
 
-    def test_9_2_instatiation(self):
-        """Test for instances."""
+    def test_state_id(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.state_id), str)
 
-        c = City()
-        self.assertEqual(str(type(c)), "<class 'models.city.City'>")
-        self.assertIsInstance(c, City)
-        self.assertTrue(issubclass(City, BaseModel))
-
-    def test_9_2_class_attr(self):
-        """Checks for class attributes."""
-
-        c = City()
-        self.assertTrue(hasattr(City, "state_id"))
-        self.assertTrue(hasattr(City, "name"))
-
-    def test_9_2_attr(self):
-        """Checks for attributes types."""
-        c = City()
-        self.assertTrue(c.state_id == "")
-        self.assertTrue(c.name == "")
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_name(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.name), str)
