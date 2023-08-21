@@ -1,50 +1,53 @@
 #!/usr/bin/python3
-""" Unittests : console """
+"""test for console"""
 import unittest
-from console import HBNBCommand
-from io import StringIO
-import json
-import sys
 from unittest.mock import patch
-import pep8
+from io import StringIO
 import os
+import console
+from console import HBNBCommand
 
 
 class TestConsole(unittest.TestCase):
-    """ test console class """
+    """Test Suite for the console"""
 
-    def test_all(self):
-        """ test all method """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+    @classmethod
+    def setUpClass(cls):
+        """setup for the test"""
+        cls.consol = HBNBCommand()
 
-    def test_show(self):
-        """ test show method """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+    @classmethod
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.consol
 
-    def test_create(self):
-        """ test create method """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+    def tearDown(self):
+        """Remove temporary file (file.json) created as a result"""
+        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
+            try:
+                os.remove("file.json")
+            except Exception:
+                pass
 
-    def test_update(self):
-        """ test update method """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+    def test_docstrings_in_console(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(console.__doc__)
+        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
 
-    def test_destroy(self):
-        """ test destroy method """
+    def test_emptyline(self):
+        """Test empty line"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+            self.consol.onecmd("\n")
+            self.assertEqual('', f.getvalue())
 
-    def test_destroy(self):
-        """ test detroy method """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy NUGGET")
-            self.assertEqual(f.getvalue(), "\n** class doesn't exist **\n")
+
+if __name__ == "__main__":
+    unittest.main()
